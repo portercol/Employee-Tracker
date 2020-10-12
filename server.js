@@ -31,6 +31,7 @@ function runSearch() {
         "View All Employees By Department",
         "View All Employees By Manager",
         "Add Employee",
+        "Exit"
       ]
     })
     .then(function (answer) {
@@ -40,7 +41,7 @@ function runSearch() {
           break;
 
         case "View All Employees By Department":
-          // viewDepartEmp();
+          viewDepartment();
           break;
 
         case "View All Employees By Manager":
@@ -50,26 +51,40 @@ function runSearch() {
         case "Add Employee":
           addEmployee();
           break;
+        
+        case "Exit":
+          con.end();
+          break;
       }
     });
 };
 
 function viewEmployees() {
-  // inquirer.prompt({
-  //   name: "employee",
-  //   type: "input",
-  //   message: "What is the employees name?"
-  // })
-  // .then(function (answer) {
   var query = "SELECT * FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
   con.query(query, function (err, res) {
     if (err) throw err;
-    // for (var i = 0; i < res.length; i++)
     console.table(res);
     runSearch();
   });
-  // });
 };
+
+function viewDepartment() {
+  inquirer.prompt([
+    {
+      name: "department_name",
+      type: "list",
+      message: "Which department do you want to view?",
+      choices: ["Engineering", "Sales", "Human Resources"]
+    }
+  ])
+  .then(function(answer){
+    var query = "SELECT first_name, last_name, department_name, title, salary FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
+    con.query(query, [answer.department_name], function(err, res){
+      if (err) throw err;
+      console.table(res);
+    })
+  })
+}
 
 function addEmployee() {
   inquirer.prompt([
@@ -132,6 +147,6 @@ function addEmployee() {
           console.log("Your employee was added successfully!");
           runSearch();
         }
-      )
-    })
-}
+      );
+    });
+};
