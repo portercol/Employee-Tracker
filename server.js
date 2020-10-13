@@ -29,7 +29,7 @@ function runSearch() {
       choices: [
         "View All Employees",
         "View All Employees By Department",
-        "View All Employees By Manager",
+        "View All Employees By Role",
         "Add Employee",
         "Exit"
       ]
@@ -44,12 +44,20 @@ function runSearch() {
           viewDepartment();
           break;
 
-        case "View All Employees By Manager":
-          // viewManagEmp();
+        case "View All Employees By Role":
+          // viewRole();
           break;
 
         case "Add Employee":
           addEmployee();
+          break;
+        
+        case "Add Department":
+          addDepartment();
+          break;
+        
+        case "Add Role":
+          addRole();
           break;
         
         case "Exit":
@@ -59,6 +67,7 @@ function runSearch() {
     });
 };
 
+
 function viewEmployees() {
   var query = "SELECT * FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
   con.query(query, function (err, res) {
@@ -67,6 +76,8 @@ function viewEmployees() {
     runSearch();
   });
 };
+
+
 
 function viewDepartment() {
   inquirer.prompt([
@@ -79,12 +90,13 @@ function viewDepartment() {
   ])
   .then(function(answer){
     var query = "SELECT first_name, last_name, department_name, title, salary FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
-    con.query(query, [answer.department_name], function(err, res){
+    con.query(query, function(err, res){
       if (err) throw err;
       console.table(res);
-    })
-  })
-}
+    });
+  });
+};
+
 
 function addEmployee() {
   inquirer.prompt([
