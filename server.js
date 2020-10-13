@@ -28,8 +28,8 @@ function runSearch() {
       message: "What would you like to do?",
       choices: [
         "View All Employees",
-        "View All Employees By Department",
-        "View All Employees By Role",
+        "View All Departments",
+        "View All Roles",
         "Add Employee",
         "Add Department",
         "Add Role",
@@ -44,11 +44,11 @@ function runSearch() {
           viewEmployees();
           break;
 
-        case "View All Employees By Department":
+        case "View All Departments":
           viewDepartment();
           break;
 
-        case "View All Employees By Role":
+        case "View All Roles":
           viewRole();
           break;
 
