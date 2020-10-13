@@ -37,6 +37,7 @@ function runSearch() {
         "Exit"
       ]
     })
+  // Promise used to input answer in command line and then run the function down below 
     .then(function (answer) {
       switch (answer.action) {
         case "View All Employees":
@@ -54,15 +55,15 @@ function runSearch() {
         case "Add Employee":
           addEmployee();
           break;
-        
+
         case "Add Department":
           addDepartment();
           break;
-        
+
         case "Add Role":
           addRole();
           break;
-        
+
         case "Update Employee Role":
           updateRole();
           break;
@@ -74,7 +75,8 @@ function runSearch() {
     });
 };
 
-
+// Function to view employee - mysql query allows the user to view all employee data
+// Using Inner Join to join together all 3 tables in mysql workbench
 function viewEmployees() {
   var query = "SELECT * FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
   con.query(query, function (err, res) {
@@ -85,7 +87,7 @@ function viewEmployees() {
 };
 
 
-
+// Function to view department \\ User can view specific departments based off their prompt choice
 function viewDepartment() {
   inquirer.prompt([
     {
@@ -95,13 +97,14 @@ function viewDepartment() {
       choices: ["Engineering", "Sales", "Human Resources"]
     }
   ])
-  .then(function(answer){
-    var query = "SELECT first_name, last_name, department_name, title, salary FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
-    con.query(query, function(err, res){
-      if (err) throw err;
-      console.table(res);
+// Promise used to input specific answer based off the choice from prior prompt
+    .then(function (answer) {
+      var query = "SELECT first_name, last_name, department_name, title, salary FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
+      con.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+      });
     });
-  });
 };
 
 
@@ -176,9 +179,26 @@ function addEmployee() {
 };
 
 
-// function addDepartment(){
-//   console.log("You are adding a department");
-// }
+function addDepartment() {
+  inquirer.prompt([
+    {
+      name: "department_name",
+      type: "input",
+      message: "What is the name of the department?"
+    }
+  ])
+    .then(function (answer) {
+      con.query("INSERT INTO department SET ?",
+      {
+        department_name: answer.department_name
+      },
+      function (err, res) {
+        if (err) throw err;
+        console.log("You've added a new department!");
+        runSearch();
+      });
+    });
+};
 
 
 // function addRole() {
