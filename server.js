@@ -98,6 +98,7 @@ function viewDepartment() {
     }
   ])
 // Promise used to input specific answer based off the choice from prior prompt
+// MySQL query allows user to view all departments stored in DB
     .then(function (answer) {
       var query = "SELECT first_name, last_name, department_name, title, salary FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
       con.query(query, function (err, res) {
@@ -112,7 +113,7 @@ function viewDepartment() {
 // console.log("You are viewing a role");
 // }
 
-
+// Function to add an employee; user can input a first name, last name, role id and manager id
 function addEmployee() {
   inquirer.prompt([
     {
@@ -156,6 +157,7 @@ function addEmployee() {
     //   message: "What is the employees department id?"
     // }
   ])
+// Promise statement to input answers and MySQL query to update employee info in DB
     .then(function (answer) {
       con.query(
         "INSERT INTO employee SET ?",
@@ -178,7 +180,7 @@ function addEmployee() {
     });
 };
 
-
+// Function to add a new department - user is asked for the name of the new department
 function addDepartment() {
   inquirer.prompt([
     {
@@ -187,6 +189,7 @@ function addDepartment() {
       message: "What is the name of the department?"
     }
   ])
+// Promise statement and MySQL query to update DB with new department
     .then(function (answer) {
       con.query("INSERT INTO department SET ?",
       {
@@ -200,7 +203,7 @@ function addDepartment() {
     });
 };
 
-
+// Function to add a new role - user is asked questions about the title, salary and department name
 function addRole() {
   inquirer.prompt([
     {
@@ -219,6 +222,7 @@ function addRole() {
       message: "Which department is the new role in? 1) Engineering 2) Sales"
     }
   ])
+// Promise statement and MySQL query to update DB with new role info
     .then(function(answer){
       con.query("INSERT INTO role SET ?",
       {
@@ -228,7 +232,7 @@ function addRole() {
       },
       function(err, res) {
         if (err) throw err;
-        console.log("You've added a role");
+        console.log("You've added a new role");
         runSearch();
       });
     });
