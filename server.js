@@ -201,9 +201,38 @@ function addDepartment() {
 };
 
 
-// function addRole() {
-//   console.log("You are adding a role");
-// }
+function addRole() {
+  inquirer.prompt([
+    {
+      name: "title",
+      type: "input",
+      message: "What is the title of the role?"
+    },
+    {
+      name: "salary",
+      type: "input",
+      message: "What is the salary of the role?"
+    },
+    {
+      name: "department_id",
+      type: "input",
+      message: "Which department is the new role in? 1) Engineering 2) Sales"
+    }
+  ])
+    .then(function(answer){
+      con.query("INSERT INTO role SET ?",
+      {
+        title: answer.title,
+        salary: answer.salary,
+        department_id: answer.department_id
+      },
+      function(err, res) {
+        if (err) throw err;
+        console.log("You've added a role");
+        runSearch();
+      });
+    });
+};
 
 
 // function updateRole() {
