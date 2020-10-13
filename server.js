@@ -31,6 +31,9 @@ function runSearch() {
         "View All Employees By Department",
         "View All Employees By Role",
         "Add Employee",
+        "Add Department",
+        "Add Role",
+        "Update Employee Role",
         "Exit"
       ]
     })
@@ -45,7 +48,7 @@ function runSearch() {
           break;
 
         case "View All Employees By Role":
-          // viewRole();
+          viewRole();
           break;
 
         case "Add Employee":
@@ -60,6 +63,10 @@ function runSearch() {
           addRole();
           break;
         
+        case "Update Employee Role":
+          updateRole();
+          break;
+
         case "Exit":
           con.end();
           break;
@@ -96,6 +103,11 @@ function viewDepartment() {
     });
   });
 };
+
+
+// function viewRole() {
+// console.log("You are viewing a role");
+// }
 
 
 function addEmployee() {
@@ -162,3 +174,18 @@ function addEmployee() {
       );
     });
 };
+
+
+// function addDepartment(){
+//   console.log("You are adding a department");
+// }
+
+
+// function addRole() {
+//   console.log("You are adding a role");
+// }
+
+
+// function updateRole() {
+//   console.log("You are updating a role");
+// }
