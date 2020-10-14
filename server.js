@@ -185,45 +185,51 @@ function addDepartment() {
 // Function to add a new role - user is asked questions about the title, salary and department name
 function addRole() {
   con.query("SELECT * FROM department", (err, res) => {
-  inquirer.prompt([
-    {
-      name: "roleTitle",
-      type: "input",
-      message: "What is the title of the role?"
-    },
-    {
-      name: "roleSalary",
-      type: "input",
-      message: "What is the salary of the role? (must be a number)",
-      // Validates that the user enters a number and returns an error is input is invalid
-      validate: (salary) => {
-        if (isNaN(salary) === false){
-          return true;
+    inquirer.prompt([
+      {
+        name: "roleTitle",
+        type: "input",
+        message: "What is the title of the role?"
+      },
+      {
+        name: "roleSalary",
+        type: "input",
+        message: "What is the salary of the role? (must be a number)",
+        // Validates that the user enters a number and returns an error is input is invalid
+        validate: (salary) => {
+          if (isNaN(salary) === false) {
+            return true;
+          }
+          return "Please enter a valid number";
         }
-        return "Please enter a valid number";
+      },
+      {
+        name: "roleID",
+        type: "rawlist",
+        // Using .map, it loops over results of role and runs through every department name in DB
+        choices: res.map(department => department.department_name)
       }
-    },
-    {
-      name: "roleID",
-      type: "rawlist",
-      // Using .map, it loops over results of role and runs through every department name in DB
-      choices: res.map(department => department.department_name)
-    }
-  ])
-    // Promise statement and MySQL query to update DB with new role info
-    .then(function (answer) {
-      con.query("INSERT INTO role SET ?",
-        {
-          title: answer.title,
-          salary: answer.salary,
-          department_id: answer.department_id
-        },
-        function (err, res) {
-          if (err) throw err;
-          console.log("You've added a new role");
+    ])
+      .then(({ roleTitle, roleSalary, roleID }) => {
+        // Store dept id # in a variable
+        var deptID;
+        res.map(finds => {
+          if (finds.department_name === roleID) {
+            deptID = finds.id;
+            con.query("INSERT INTO role SET ?",
+              {
+                title: roleTitle,
+                salary: roleSalary,
+                department_id: deptID
+              });
+            console.log("You've added a new role!");
+          }
+        })
+        con.query("SELECT * FROM role", (err, res) => {
+          console.table(res);
           startPrompt();
-        });
-    });
+        })
+      });
   });
 };
 
