@@ -184,21 +184,21 @@ function addDepartment() {
 
 // Function to add a new role - user is asked questions about the title, salary and department name
 function addRole() {
+  con.query("SELECT * FROM department", (err, res) => {
   inquirer.prompt([
     {
-      name: "title",
+      name: "roleTitle",
       type: "input",
       message: "What is the title of the role?"
     },
     {
-      name: "salary",
+      name: "roleSalary",
       type: "input",
       message: "What is the salary of the role?"
     },
     {
-      name: "department_id",
-      type: "input",
-      message: "Which department is the new role in? 1) Engineering 2) Sales"
+      name: "roleID",
+      type: "rawlist",
     }
   ])
     // Promise statement and MySQL query to update DB with new role info
@@ -215,6 +215,7 @@ function addRole() {
           startPrompt();
         });
     });
+  });
 };
 
 
