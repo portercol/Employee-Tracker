@@ -1,7 +1,6 @@
 // Require npm modules
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const util = require("util");
 
 var queryPromise;
 var queryClose;
@@ -16,14 +15,9 @@ var con = mysql.createConnection({
 });
 
 // Run the connection and initial prompt funtion 'runSearch'
-con.connect(async function (err) {
+con.connect(function (err) {
   if (err) throw err;
   console.log("Connected on id: " + con.threadId);
-  queryPromise = util.promisify(con.query).bind(con);
-  queryClose = util.promisify(con.end).bind(con);
-
-  // var test = await queryPromise("SELECT * FROM department")
-  // console.table(test);
   runSearch();
 });
 
