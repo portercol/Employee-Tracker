@@ -2,9 +2,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 
-var queryPromise;
-var queryClose;
-
 // Create connection for MySQL Database
 var con = mysql.createConnection({
   host: "localhost",
@@ -105,7 +102,7 @@ function viewDepartment() {
 // }
 
 // Function to add an employee; user can input a first name, last name, role id and manager id
-async function addEmployee() {
+function addEmployee() {
   var roles = await queryPromise("SELECT * FROM role");
   var managers = await queryPromise("SELECT * FROM employee WHERE manager_id IS NULL");
 
@@ -240,7 +237,3 @@ function addRole() {
 // function updateRole() {
 //   console.log("You are updating a role");
 // }
-
-process.on("exit", function(){
-  queryClose();
-});
