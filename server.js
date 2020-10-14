@@ -1,7 +1,10 @@
 // Require npm modules
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const conTable = require("console.table");
+const util = require("util");
+
+var queryPromise;
+var queryClose;
 
 // Create connection for MySQL Database
 var con = mysql.createConnection({
@@ -13,9 +16,14 @@ var con = mysql.createConnection({
 });
 
 // Run the connection and initial prompt funtion 'runSearch'
-con.connect(function (err) {
+con.connect(async function (err) {
   if (err) throw err;
   console.log("Connected on id: " + con.threadId);
+  queryPromise = util.promisify(con.query).bind(con);
+  queryClose = util.promisify(con.end).bind(con);
+
+  // var test = await queryPromise("SELECT * FROM department")
+  // console.table(test);
   runSearch();
 });
 
@@ -89,23 +97,12 @@ function viewEmployees() {
 
 // Function to view department \\ User can view specific departments based off their prompt choice
 function viewDepartment() {
-  inquirer.prompt([
-    {
-      name: "department_name",
-      type: "list",
-      message: "Which department do you want to view?",
-      choices: ["Engineering", "Sales", "Human Resources"]
-    }
-  ])
-// Promise used to input specific answer based off the choice from prior prompt
 // MySQL query allows user to view all departments stored in DB
-    .then(function (answer) {
-      var query = "SELECT first_name, last_name, department_name, title, salary FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
+      var query = "SELECT * FROM department";
       con.query(query, function (err, res) {
         if (err) throw err;
         console.table(res);
       });
-    });
 };
 
 
@@ -114,7 +111,11 @@ function viewDepartment() {
 // }
 
 // Function to add an employee; user can input a first name, last name, role id and manager id
-function addEmployee() {
+async function addEmployee() {
+  var roles = await queryPromise("SELECT * FROM role");
+  var managers = await queryPromise("SELECT * FROM employee WHERE manager_id IS NULL");
+
+  console.table(managers)
   inquirer.prompt([
     {
       name: "first_name",
@@ -128,13 +129,15 @@ function addEmployee() {
     },
     {
       name: "role_id",
-      type: "input",
-      message: "What is the employees role id?"
+      type: "list",
+      message: "What is the employees role id?",
+      choices: roles.map( (role) => role.title)
     },
     {
       name: "manager_id",
-      type: "input",
-      message: "What is the employees manager id?"
+      type: "list",
+      message: "What is the employees manager id?",
+      choices: managers.map( (manager) => manager.first_name)
     }
     // {
     //   name: "department_name",
@@ -242,3 +245,7 @@ function addRole() {
 // function updateRole() {
 //   console.log("You are updating a role");
 // }
+
+process.on("exit", function(){
+  queryClose();
+});
