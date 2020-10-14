@@ -94,87 +94,68 @@ function viewDepartment() {
       });
 };
 
-
+// Function to view roles, MySQL query statement and printing the table to the console
 function viewRole() {
+// MySQL query allows user to view all departments stored in DB
   con.query("SELECT * FROM role", (err, res) => {
     console.table(res);
     startPrompt();
   });
 };
 
-// Function to add an employee; user can input a first name, last name, role id and manager id
-// function addEmployee() {
-//   var roles = await queryPromise("SELECT * FROM role");
-//   var managers = await queryPromise("SELECT * FROM employee WHERE manager_id IS NULL");
+//Function to add an employee; user can input a first name, last name, role id and manager id
+function addEmployee() {
+  con.query("SELECT * FROM role", (err, res) => {
+    inquirer.prompt([
+      {
+        name: "first_name",
+        type: "input",
+        message: "What is the employees first name?"
+      },
+      {
+        name: "last_name",
+        type: "input",
+        message: "What is the employees last name?"
+      },
+      {
+        name: "role_id",
+        type: "list",
+        message: "What is the employees role id?",
+        choices: roles.map( (role) => role.title)
+      },
+      {
+        name: "manager_id",
+        type: "list",
+        message: "What is the employees manager id?",
+        choices: managers.map( (manager) => manager.first_name)
+      }
+    ])
 
-//   console.table(managers)
-//   inquirer.prompt([
-//     {
-//       name: "first_name",
-//       type: "input",
-//       message: "What is the employees first name?"
-//     },
-//     {
-//       name: "last_name",
-//       type: "input",
-//       message: "What is the employees last name?"
-//     },
-//     {
-//       name: "role_id",
-//       type: "list",
-//       message: "What is the employees role id?",
-//       choices: roles.map( (role) => role.title)
-//     },
-//     {
-//       name: "manager_id",
-//       type: "list",
-//       message: "What is the employees manager id?",
-//       choices: managers.map( (manager) => manager.first_name)
-//     }
-//     // {
-//     //   name: "department_name",
-//     //   type: "input",
-//     //   message: "What is the employees department?"
-//     // },
-//     // {
-//     //   name: "title",
-//     //   type: "input",
-//     //   message: "What is the employees title?"
-//     // },
-//     // {
-//     //   name: "salary",
-//     //   type: "input",
-//     //   message: "What is the employees salary?"
-//     // },
-//     // {
-//     //   name: "department_id",
-//     //   type: "input",
-//     //   message: "What is the employees department id?"
-//     // }
-//   ])
-// // Promise statement to input answers and MySQL query to update employee info in DB
-//     .then(function (answer) {
-//       console.log(answer);
-//       con.query(
-//         "INSERT INTO employee SET ?",
-//         {
-//           first_name: answer.first_name,
-//           last_name: answer.last_name,
-//           role_id: answer.role_id,
-//           manager_id: answer.manager_id,
-//           // department: answer.department,
-//           // title: answer.title,
-//           // salary: answer.salary,
-//           // department_id: answer.department_id
-//         },
-//         function (err, res) {
-//           if (err) throw err;
-//           console.log("Your employee was added successfully!");
-//           startPrompt();
-//         }
-//       );
-//     });
-// };
+  })
+};  
+// Promise statement to input answers and MySQL query to update employee info in DB
+    // .then(function (answer) {
+    //   console.log(answer);
+    //   con.query(
+    //     "INSERT INTO employee SET ?",
+    //     {
+    //       first_name: answer.first_name,
+    //       last_name: answer.last_name,
+    //       role_id: answer.role_id,
+    //       manager_id: answer.manager_id,
+    //       // department: answer.department,
+    //       // title: answer.title,
+    //       // salary: answer.salary,
+    //       // department_id: answer.department_id
+    //     },
+    //     function (err, res) {
+    //       if (err) throw err;
+    //       console.log("Your employee was added successfully!");
+    //       startPrompt();
+    //     }
+    //   );
+    // });
+
 
 // Function to add a new department - user is asked for the name of the new department
 function addDepartment() {
