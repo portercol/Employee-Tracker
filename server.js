@@ -3,7 +3,7 @@ const inquirer = require("inquirer");
 const mysql = require("mysql");
 
 // Create connection for MySQL Database
-var con = mysql.createConnection({
+const con = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
@@ -12,7 +12,7 @@ var con = mysql.createConnection({
 });
 
 // Run the connection and initial prompt funtion 'startPrompt'
-con.connect(function (err) {
+con.connect((err) => {
   if (err) throw err;
   console.log("Connected on id: " + con.threadId);
   startPrompt();
@@ -36,9 +36,9 @@ function startPrompt() {
         "Exit"
       ]
     })
-  // Promise used to input answer in command line and then run the function down below 
-    .then(function (answer) {
-      switch (answer.action) {
+  .then(({ action }) => {
+// Switch statement will check for user input then run a function based off that input
+    switch (action) {
         case "View All Employees":
           viewEmployees();
           break;
