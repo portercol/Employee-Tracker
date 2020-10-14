@@ -95,9 +95,12 @@ function viewDepartment() {
 };
 
 
-// function viewRole() {
-// console.log("You are viewing a role");
-// }
+function viewRole() {
+  con.query("SELECT * FROM role", (err, res) => {
+    console.table(res);
+    startPrompt();
+  });
+};
 
 // Function to add an employee; user can input a first name, last name, role id and manager id
 // function addEmployee() {
