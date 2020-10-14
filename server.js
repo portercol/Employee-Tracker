@@ -124,31 +124,29 @@ function addEmployee() {
         choices: res.map((role) => role.title)
       }
     ])
+    // Promise statement to input answers and MySQL query to update employee info in DB
+    .then(({ first_name, last_name, employee_role }) => {
+  // Store roleID in a variable to use later
+      var roleID;
+      res.map(finds => {
+        if (finds.title === employee_role) {
+          roleID = finds.id;
+          con.query("INSERT INTO employee SET ?",
+          {
+            first_name: first_name,
+            last_name: last_name,
+            role_id: roleID
+          },
+          )
+        }
+      })
+    })
 
   })
-};  
-// Promise statement to input answers and MySQL query to update employee info in DB
-    // .then(function (answer) {
-    //   console.log(answer);
-    //   con.query(
-    //     "INSERT INTO employee SET ?",
-    //     {
-    //       first_name: answer.first_name,
-    //       last_name: answer.last_name,
-    //       role_id: answer.role_id,
-    //       manager_id: answer.manager_id,
-    //       // department: answer.department,
-    //       // title: answer.title,
-    //       // salary: answer.salary,
-    //       // department_id: answer.department_id
-    //     },
-    //     function (err, res) {
-    //       if (err) throw err;
-    //       console.log("Your employee was added successfully!");
-    //       startPrompt();
-    //     }
-    //   );
-    // });
+};
+ 
+    
+
 
 
 // Function to add a new department - user is asked for the name of the new department
