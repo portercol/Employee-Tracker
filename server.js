@@ -118,16 +118,10 @@ function addEmployee() {
         message: "What is the employees last name?"
       },
       {
-        name: "role_id",
+        name: "employee_role",
         type: "list",
-        message: "What is the employees role id?",
-        choices: roles.map( (role) => role.title)
-      },
-      {
-        name: "manager_id",
-        type: "list",
-        message: "What is the employees manager id?",
-        choices: managers.map( (manager) => manager.first_name)
+        message: "What is the employees role?",
+        choices: res.map((role) => role.title)
       }
     ])
 
