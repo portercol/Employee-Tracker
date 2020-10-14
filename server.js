@@ -11,15 +11,15 @@ var con = mysql.createConnection({
   database: "employee_tracker_DB"
 });
 
-// Run the connection and initial prompt funtion 'runSearch'
+// Run the connection and initial prompt funtion 'startPrompt'
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connected on id: " + con.threadId);
-  runSearch();
+  startPrompt();
 });
 
 // Initial prompt of questions function
-function runSearch() {
+function startPrompt() {
   inquirer
     .prompt({
       name: "action",
@@ -81,7 +81,7 @@ function viewEmployees() {
   con.query(query, function (err, res) {
     if (err) throw err;
     console.table(res);
-    runSearch();
+    startPrompt();
   });
 };
 
@@ -169,7 +169,7 @@ function addEmployee() {
         function (err, res) {
           if (err) throw err;
           console.log("Your employee was added successfully!");
-          runSearch();
+          startPrompt();
         }
       );
     });
@@ -193,7 +193,7 @@ function addDepartment() {
       function (err, res) {
         if (err) throw err;
         console.log("You've added a new department!");
-        runSearch();
+        startPrompt();
       });
     });
 };
@@ -228,7 +228,7 @@ function addRole() {
       function(err, res) {
         if (err) throw err;
         console.log("You've added a new role");
-        runSearch();
+        startPrompt();
       });
     });
 };
