@@ -137,12 +137,16 @@ function addEmployee() {
             last_name: lastName,
             role_id: roleID
           },
-          )
-        }
-      })
-    })
-
-  })
+          console.log("You've added an employee")
+          );
+          con.query("SELECT * FROM employee", (err, res) => {
+            console.table(res);
+            startPrompt();
+          });
+        };
+      });
+    });
+  });
 };
  
     
