@@ -77,9 +77,7 @@ function startPrompt() {
 // Function to view employee - mysql query allows the user to view all employee data
 // Using Inner Join to join together all 3 tables in mysql workbench
 function viewEmployees() {
-  var query = "SELECT * FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id";
-  con.query(query, function (err, res) {
-    if (err) throw err;
+  con.query("SELECT * FROM employee", (err, res) => {
     console.table(res);
     startPrompt();
   });
@@ -102,78 +100,78 @@ function viewDepartment() {
 // }
 
 // Function to add an employee; user can input a first name, last name, role id and manager id
-function addEmployee() {
-  var roles = await queryPromise("SELECT * FROM role");
-  var managers = await queryPromise("SELECT * FROM employee WHERE manager_id IS NULL");
+// function addEmployee() {
+//   var roles = await queryPromise("SELECT * FROM role");
+//   var managers = await queryPromise("SELECT * FROM employee WHERE manager_id IS NULL");
 
-  console.table(managers)
-  inquirer.prompt([
-    {
-      name: "first_name",
-      type: "input",
-      message: "What is the employees first name?"
-    },
-    {
-      name: "last_name",
-      type: "input",
-      message: "What is the employees last name?"
-    },
-    {
-      name: "role_id",
-      type: "list",
-      message: "What is the employees role id?",
-      choices: roles.map( (role) => role.title)
-    },
-    {
-      name: "manager_id",
-      type: "list",
-      message: "What is the employees manager id?",
-      choices: managers.map( (manager) => manager.first_name)
-    }
-    // {
-    //   name: "department_name",
-    //   type: "input",
-    //   message: "What is the employees department?"
-    // },
-    // {
-    //   name: "title",
-    //   type: "input",
-    //   message: "What is the employees title?"
-    // },
-    // {
-    //   name: "salary",
-    //   type: "input",
-    //   message: "What is the employees salary?"
-    // },
-    // {
-    //   name: "department_id",
-    //   type: "input",
-    //   message: "What is the employees department id?"
-    // }
-  ])
-// Promise statement to input answers and MySQL query to update employee info in DB
-    .then(function (answer) {
-      console.log(answer);
-      con.query(
-        "INSERT INTO employee SET ?",
-        {
-          first_name: answer.first_name,
-          last_name: answer.last_name,
-          role_id: answer.role_id,
-          manager_id: answer.manager_id,
-          // department: answer.department,
-          // title: answer.title,
-          // salary: answer.salary,
-          // department_id: answer.department_id
-        },
-        function (err, res) {
-          if (err) throw err;
-          console.log("Your employee was added successfully!");
-          startPrompt();
-        }
-      );
-    });
-};
+//   console.table(managers)
+//   inquirer.prompt([
+//     {
+//       name: "first_name",
+//       type: "input",
+//       message: "What is the employees first name?"
+//     },
+//     {
+//       name: "last_name",
+//       type: "input",
+//       message: "What is the employees last name?"
+//     },
+//     {
+//       name: "role_id",
+//       type: "list",
+//       message: "What is the employees role id?",
+//       choices: roles.map( (role) => role.title)
+//     },
+//     {
+//       name: "manager_id",
+//       type: "list",
+//       message: "What is the employees manager id?",
+//       choices: managers.map( (manager) => manager.first_name)
+//     }
+//     // {
+//     //   name: "department_name",
+//     //   type: "input",
+//     //   message: "What is the employees department?"
+//     // },
+//     // {
+//     //   name: "title",
+//     //   type: "input",
+//     //   message: "What is the employees title?"
+//     // },
+//     // {
+//     //   name: "salary",
+//     //   type: "input",
+//     //   message: "What is the employees salary?"
+//     // },
+//     // {
+//     //   name: "department_id",
+//     //   type: "input",
+//     //   message: "What is the employees department id?"
+//     // }
+//   ])
+// // Promise statement to input answers and MySQL query to update employee info in DB
+//     .then(function (answer) {
+//       console.log(answer);
+//       con.query(
+//         "INSERT INTO employee SET ?",
+//         {
+//           first_name: answer.first_name,
+//           last_name: answer.last_name,
+//           role_id: answer.role_id,
+//           manager_id: answer.manager_id,
+//           // department: answer.department,
+//           // title: answer.title,
+//           // salary: answer.salary,
+//           // department_id: answer.department_id
+//         },
+//         function (err, res) {
+//           if (err) throw err;
+//           console.log("Your employee was added successfully!");
+//           startPrompt();
+//         }
+//       );
+//     });
+// };
 
 // Function to add a new department - user is asked for the name of the new department
 function addDepartment() {
