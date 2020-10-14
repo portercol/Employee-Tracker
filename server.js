@@ -162,6 +162,7 @@ async function addEmployee() {
   ])
 // Promise statement to input answers and MySQL query to update employee info in DB
     .then(function (answer) {
+      console.log(answer);
       con.query(
         "INSERT INTO employee SET ?",
         {
