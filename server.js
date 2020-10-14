@@ -194,11 +194,20 @@ function addRole() {
     {
       name: "roleSalary",
       type: "input",
-      message: "What is the salary of the role?"
+      message: "What is the salary of the role? (must be a number)",
+      // Validates that the user enters a number and returns an error is input is invalid
+      validate: (salary) => {
+        if (isNaN(salary) === false){
+          return true;
+        }
+        return "Please enter a valid number";
+      }
     },
     {
       name: "roleID",
       type: "rawlist",
+      // Using .map, it loops over results of role and runs through every department name in DB
+      choices: res.map(department => department.department_name)
     }
   ])
     // Promise statement and MySQL query to update DB with new role info
