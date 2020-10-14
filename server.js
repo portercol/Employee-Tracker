@@ -108,33 +108,33 @@ function addEmployee() {
   con.query("SELECT * FROM role", (err, res) => {
     inquirer.prompt([
       {
-        name: "first_name",
+        name: "firstName",
         type: "input",
         message: "What is the employees first name?"
       },
       {
-        name: "last_name",
+        name: "lastName",
         type: "input",
         message: "What is the employees last name?"
       },
       {
-        name: "employee_role",
+        name: "employeeRole",
         type: "list",
         message: "What is the employees role?",
         choices: res.map((role) => role.title)
       }
     ])
     // Promise statement to input answers and MySQL query to update employee info in DB
-    .then(({ first_name, last_name, employee_role }) => {
+    .then(({ firstName, lastName, employeeRole }) => {
   // Store roleID in a variable to use later
       var roleID;
       res.map(finds => {
-        if (finds.title === employee_role) {
+        if (finds.title === employeeRole) {
           roleID = finds.id;
           con.query("INSERT INTO employee SET ?",
           {
-            first_name: first_name,
-            last_name: last_name,
+            first_name: firstName,
+            last_name: lastName,
             role_id: roleID
           },
           )
