@@ -81,8 +81,8 @@ function startPrompt() {
 // Function to view employee - mysql query allows the user to view all employee data
 // Using Inner Join to join together all 3 tables in mysql workbench
 function viewEmployees() {
-  con.query("SELECT * FROM employee INNER JOIN department ON employee.id = department.id INNER JOIN role ON department.id = role.id"
-    , (err, res) => {
+  con.query("SELECT * FROM employee",
+    (err, res) => {
       console.table(res);
       startPrompt();
     });
@@ -144,7 +144,8 @@ function addEmployee() {
               {
                 first_name: firstName,
                 last_name: lastName,
-                role_id: roleID
+                role_id: roleID,
+                manager_id: 2
               },
               console.log("You've added an employee")
             );
@@ -169,10 +170,10 @@ function addDepartment() {
     }
   ])
     // Promise statement and MySQL query to update DB with new department
-    .then(({ addDepartment }) => {
+    .then(({ newDepartment }) => {
       con.query("INSERT INTO department SET ?",
         {
-          department_name: addDepartment
+          department_name: newDepartment
         },
       );
       con.query("SELECT * FROM department", (err, res) => {
@@ -182,9 +183,11 @@ function addDepartment() {
     });
 };
 
+
 // Function to add a new role - user is asked questions about the title, salary and department name
 function addRole() {
   con.query("SELECT * FROM department", (err, res) => {
+    if (err) throw err;
     inquirer.prompt([
       {
         name: "roleTitle",
@@ -206,6 +209,7 @@ function addRole() {
       {
         name: "roleID",
         type: "rawlist",
+        // message: "Which department is the role in?",
         // Using .map, it loops over results of role and runs through every department name in DB
         choices: res.map(department => department.department_name)
       }
@@ -213,9 +217,11 @@ function addRole() {
       .then(({ roleTitle, roleSalary, roleID }) => {
         // Store dept id # in a variable
         var deptID;
+        // Loop over the results and if the deptartment_name input is equal to an existing department ID, then assign the variable deptID to the actual department id
         res.map(finds => {
           if (finds.department_name === roleID) {
             deptID = finds.id;
+            // Insert user input into the role table in DB
             con.query("INSERT INTO role SET ?",
               {
                 title: roleTitle,
@@ -234,6 +240,26 @@ function addRole() {
 };
 
 
-// function updateRole() {
-//   console.log("You are updating a role");
-// }
+function updateRole() {
+  con.query("SELECT id, first_name, last_name FROM employee", (err, res) => {
+    inquirer.prompt([
+      {
+        name: "employeeID",
+        type: "rawlist",
+        message: "Which employee role do you want to update?",
+        choices: res.map(name => name.first_name)
+      },
+      {
+        name: "employeeRole",
+        type: "list",
+        message: "What is the employees new role?",
+        choices: res.map(role => role.title)
+      }
+    ])
+      .then(({ employeeID }) => {
+        con.query()
+
+        console.log(employeeID);
+      })
+  })
+}
