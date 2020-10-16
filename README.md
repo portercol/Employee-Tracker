@@ -5,7 +5,7 @@
 Link to walkthrough video: [Employee Tracker](https://drive.google.com/file/d/11eDj7o1J8BO6fcBusRlU-5PdUjRyYGAj/view)
 
 ## Description
-Build a command-line application that allows the user to manage their company's employees using node, inquirer, and MySQL. At a minium the user should be able to;
+Build a command-line application that allows the user to manage their company's employees using node, inquirer, and MySQL. At a minimum the user should be able to;
     1. View all departments, roles and employees.
     2. Add new departments, roles and employees.
     3. Update existing employee roles.
