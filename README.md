@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Link to walkthrough video: [Employee Tracker]()
+Link to walkthrough video: [Employee Tracker](https://drive.google.com/file/d/11eDj7o1J8BO6fcBusRlU-5PdUjRyYGAj/view)
 
 ## Description
 Build a command-line application that allows the user to manage their company's employees using node, inquirer, and MySQL. At a minium the user should be able to;
