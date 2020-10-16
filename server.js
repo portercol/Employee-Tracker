@@ -81,7 +81,7 @@ function startPrompt() {
 // Function to view employee - mysql query allows the user to view all employee data
 // Using Inner Join to join together all 3 tables in mysql workbench
 function viewEmployees() {
-  con.query("SELECT * FROM employee",
+  con.query("SELECT * FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id",
     (err, res) => {
       console.table(res);
       startPrompt();
