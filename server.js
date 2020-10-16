@@ -239,7 +239,7 @@ function addRole() {
   });
 };
 
-
+// Function to update the employees role where user will be asked to choose an employee and a role to then update to
 function updateRole() {
   con.query("SELECT * FROM employee", (err, res) => {
 
@@ -248,7 +248,7 @@ function updateRole() {
         name: "employeeID",
         type: "rawlist",
         message: "Which employee role do you want to update?",
-        choices: function () {
+        choices: () => {
           var empArr = [];
           res.forEach((data) => {
             var name = (data.first_name + " " + data.last_name)
@@ -260,26 +260,25 @@ function updateRole() {
         }
       }
     ])
-      .then(function (empmloyeeAnswer) {
+      .then((empmloyeeAnswer) => {
         con.query("SELECT * FROM role", (err, roleRes) => {
           inquirer.prompt([
             {
               name: "employeeRole",
               type: "list",
               message: "What is the employees new role?",
-              choices: function () {
+              choices: () => {
                 var roleArr = [];
                 roleRes.forEach((data1) => {
                   var name = data1.title
                   var value = data1.id
                   roleArr.push({ name, value })
                 })
-                console.log(roleArr);
                 return roleArr;
               }
             }
           ])
-            .then(function (roleAnswer) {
+            .then((roleAnswer) => {
               for (var i = 0; i < roleRes.length; i++) {
                 if (roleAnswer.employeeRole === (roleRes[i].id)) {
                   con.query("UPDATE employee SET ? WHERE ?",
