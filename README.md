@@ -16,10 +16,14 @@ Build a command-line application that allows the user to manage their company's 
     3. Use InquirerJs NPM package to interact with the user via the command-line.
     4. Use console.table to print MySQL rows to the console.
 
-### Snippets of the app
-[Employee Tracker]()
-[Employee Tracker]()
-[Employee Tracker]()
+### Viewing all employees
+![Employee Tracker](images/viewEmployees.png)
+
+### Adding an employee
+![Employee Tracker](images/addEmployee.png)
+
+### Updating an employees role
+![Employee Tracker](images/updateEmployee.png)
 
 ## Credits/Technologies
     1. Node.js
