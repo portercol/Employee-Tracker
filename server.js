@@ -241,6 +241,7 @@ function addRole() {
 
 // Function to update the employees role where user will be asked to choose an employee and a role to then update to
 function updateRole() {
+  // Query statemtnt to select all info from employee table
   con.query("SELECT * FROM employee", (err, res) => {
 
     inquirer.prompt([
@@ -260,6 +261,7 @@ function updateRole() {
         }
       }
     ])
+      // Promise statement to pass through user input for which employee to update + query statment to select all info from the role table
       .then((empmloyeeAnswer) => {
         con.query("SELECT * FROM role", (err, roleRes) => {
           inquirer.prompt([
@@ -278,9 +280,11 @@ function updateRole() {
               }
             }
           ])
+            // Promise statement to pass through user input for which role then want to update the employee to
             .then((roleAnswer) => {
               for (var i = 0; i < roleRes.length; i++) {
                 if (roleAnswer.employeeRole === (roleRes[i].id)) {
+                  // Query statement to update the table of which employee role was updated
                   con.query("UPDATE employee SET ? WHERE ?",
                     [
                       {
