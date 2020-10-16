@@ -188,6 +188,7 @@ function addDepartment() {
           department_name: newDepartment
         },
       );
+      console.log("You've add a new department!");
       con.query("SELECT * FROM department", (err, res) => {
         console.table(res);
         startPrompt();
@@ -268,7 +269,6 @@ function updateRole() {
             var value = data.id
             empArr.push({ name, value })
           })
-          console.log(empArr);
           return empArr;
         }
       }
@@ -307,6 +307,7 @@ function updateRole() {
                       }
                     ],
                   );
+                  console.log("You've updated an employees role!");
                 };
               };
               startPrompt();
