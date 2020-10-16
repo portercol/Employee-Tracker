@@ -241,25 +241,62 @@ function addRole() {
 
 
 function updateRole() {
-  con.query("SELECT id, first_name, last_name FROM employee", (err, res) => {
+  con.query("SELECT * FROM employee", (err, res) => {
+
     inquirer.prompt([
       {
         name: "employeeID",
         type: "rawlist",
         message: "Which employee role do you want to update?",
-        choices: res.map(name => name.first_name)
-      },
-      {
-        name: "employeeRole",
-        type: "list",
-        message: "What is the employees new role?",
-        choices: res.map(role => role.title)
+        choices: function () {
+          var empArr = [];
+          res.forEach((data) => {
+            var name = (data.first_name + " " + data.last_name)
+            var value = data.id
+            empArr.push({ name, value })
+          })
+          console.log(empArr);
+          return empArr;
+        }
       }
     ])
-      .then(({ employeeID }) => {
-        con.query()
-
-        console.log(employeeID);
-      })
-  })
-}
+      .then(function (empmloyeeAnswer) {
+        con.query("SELECT * FROM role", (err, roleRes) => {
+          inquirer.prompt([
+            {
+              name: "employeeRole",
+              type: "list",
+              message: "What is the employees new role?",
+              choices: function () {
+                var roleArr = [];
+                roleRes.forEach((data1) => {
+                  var name = data1.title
+                  var value = data1.id
+                  roleArr.push({ name, value })
+                })
+                console.log(roleArr);
+                return roleArr;
+              }
+            }
+          ])
+            .then(function (roleAnswer) {
+              for (var i = 0; i < roleRes.length; i++) {
+                if (roleAnswer.employeeRole === (roleRes[i].id)) {
+                  con.query("UPDATE employee SET ? WHERE ?",
+                    [
+                      {
+                        role_id: roleAnswer.employeeRole
+                      },
+                      {
+                        id: empmloyeeAnswer.employeeID
+                      }
+                    ],
+                  );
+                };
+              };
+              startPrompt();
+            });
+        });
+      });
+  });
+};
